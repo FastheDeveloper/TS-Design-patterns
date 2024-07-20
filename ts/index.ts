@@ -1,3 +1,4 @@
+// Encapsulation↓ ↓ ↓ ↓ ↓ ↓ ↓
 //BankAccount
 //Depositing
 //Withdrawing
@@ -47,6 +48,19 @@ console.log(FasAccount.balance);
 FasAccount.withdraw(200);
 console.log(FasAccount.balance);
 
+// Encapsulation↑↑↑↑↑↑↑↑↑
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+// ABSTRACTION ↓ ↓ ↓ ↓ ↓ ↓ ↓
 // // //shapes
 // //Calculates Area And Perimeter
 // //Simple-single function calculateTotalArea
@@ -122,3 +136,5 @@ console.log(FasAccount.balance);
 // console.log("Area of rectangle", calculateTotalArea(rectangle));
 // console.log("Perimeter of circle", calculatePerimeter(circle));
 // console.log("Perimeter of rectangle", calculatePerimeter(rectangle));
+
+// ABSTRACTION↑↑↑↑↑↑↑↑↑
