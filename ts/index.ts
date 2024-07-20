@@ -4,41 +4,17 @@
 
 //Interface of Shape
 
-interface Shape {
-  area(): number;
-  perimeter(): number;
-}
+//Date Class
+//Get Current Year
+//Get Current Month
+//Get Current Date
 
-class Circle implements Shape {
-  constructor(private radius: number) {}
-  area(): number {
-    return Math.PI * this.radius * this.radius;
-  }
+const now = new Date();
 
-  perimeter(): number {
-    return 2 * Math.PI * this.radius;
-  }
-}
+const currentYear = now.getFullYear();
+const currentMonth = now.getMonth() + 1;
+const currentDate = now.getDate();
 
-class Rectangle implements Shape {
-  constructor(
-    private width: number,
-    private height: number,
-  ) {}
-  area(): number {
-    return this.width * this.height;
-  }
-
-  perimeter(): number {
-    return 2 * (this.width + this.height);
-  }
-}
-
-function calculateTotalArea(Shape: Shape): number {
-  return Shape.area();
-}
-
-let circle: Circle = new Circle(5);
-let rectangle: Rectangle = new Rectangle(4, 6);
-console.log("Area of circle", calculateTotalArea(circle));
-console.log("Area of rectangle", calculateTotalArea(rectangle));
+console.log(currentYear);
+console.log(currentMonth);
+console.log(currentDate);
