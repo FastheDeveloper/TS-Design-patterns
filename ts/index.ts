@@ -1,6 +1,21 @@
-// Polymorphisim ↓ ↓ ↓ ↓ ↓ ↓
+// Inheritance ↓ ↓ ↓ ↓ ↓ ↓
 
-// Polymorphisim↑↑↑↑↑↑↑↑↑
+class Animlal {
+  constructor(public name: string) {}
+  move(distance: number): void {
+    console.log(`${this.name} moved ${distance}km.`);
+  }
+}
+
+class dog extends Animlal {
+  constructor(public name: string = "jack") {
+    super(name);
+  }
+}
+
+const myDog = new dog("Max");
+myDog.move(25);
+// Inheritance↑↑↑↑↑↑↑↑↑
 
 // Encapsulation↓ ↓ ↓ ↓ ↓ ↓ ↓
 //BankAccount
