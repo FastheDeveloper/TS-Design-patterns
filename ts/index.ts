@@ -25,22 +25,43 @@
 // myCat.move(0.0005);
 
 class Product {
-  constructor(public id: number) {}
-  display(price: number, description: string): void {
+  constructor(
+    public id: number,
+    public price: number,
+    public description: string,
+  ) {}
+  display(): void {
     console.log(
-      `the product with id: ${this.id} has the price: ${price} and description ${description}`,
+      `the product with id: ${this.id} has the price: ${this.price} and description ${this.description}`,
     );
   }
 }
 
 class Book extends Product {
-  constructor(public id: number) {
-    super(id);
+  constructor(
+    public id: number,
+    public price: number,
+    public description: string,
+  ) {
+    super(id, price, description);
   }
 }
 
-const myBook = new Book(100);
-myBook.display(10, "The Davinci code");
+class Electronics extends Product {
+  constructor(
+    public id: number,
+    public brand: number,
+    public model: string,
+  ) {
+    super(id, brand, model);
+  }
+}
+
+const myBook = new Book(100, 1678, "Davinci");
+myBook.display();
+
+const myElectronic = new Electronics(50, 10089, "TV");
+myElectronic.display();
 
 // Inheritance↑↑↑↑↑↑↑↑↑
 
