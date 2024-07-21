@@ -42,25 +42,48 @@ class Book extends Product {
     public id: number,
     public price: number,
     public description: string,
+    public title: string,
+    public author: string,
   ) {
     super(id, price, description);
+  }
+
+  display(): void {
+    super.display(); //displays the original display function
+    console.log(
+      `the product with id: ${this.id} has the price: ${this.price} and description ${this.description} with author and title  ${(this.author, this.title)}`,
+    );
   }
 }
 
 class Electronics extends Product {
   constructor(
     public id: number,
-    public brand: number,
+    public price: number,
+    public description: string,
+    public brand: string,
     public model: string,
   ) {
-    super(id, brand, model);
+    super(id, price, description);
+  }
+  display(): void {
+    super.display();
+    console.log(
+      `the product with id: ${this.id} has the price: ${this.price} and description ${this.description} with bradn and model  ${(this.brand, this.model)}`,
+    );
   }
 }
 
-const myBook = new Book(100, 1678, "Davinci");
+const myBook = new Book(
+  100,
+  1678,
+  "A good book",
+  "The Da vinci Code",
+  "Dan brown ",
+);
 myBook.display();
 
-const myElectronic = new Electronics(50, 10089, "TV");
+const myElectronic = new Electronics(50, 10089, "TV", "LG", "54GL");
 myElectronic.display();
 
 // Inheritance↑↑↑↑↑↑↑↑↑
