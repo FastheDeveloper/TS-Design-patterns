@@ -13,8 +13,17 @@ class dog extends Animlal {
   }
 }
 
+class cat extends Animlal {
+  constructor(public name: string) {
+    super(name);
+  }
+}
+
 const myDog = new dog("Max");
 myDog.move(25);
+const myCat = new cat("Mr Meowgi");
+myCat.move(0.0005);
+
 // Inheritance↑↑↑↑↑↑↑↑↑
 
 // Encapsulation↓ ↓ ↓ ↓ ↓ ↓ ↓
