@@ -1,28 +1,46 @@
 // Inheritance ↓ ↓ ↓ ↓ ↓ ↓
 
-class Animlal {
-  constructor(public name: string) {}
-  move(distance: number): void {
-    console.log(`${this.name} moved ${distance}km.`);
+// class Animlal {
+//   constructor(public name: string) {}
+//   move(distance: number): void {
+//     console.log(`${this.name} moved ${distance}km.`);
+//   }
+// }
+
+// class dog extends Animlal {
+//   constructor(public name: string = "jack") {
+//     super(name);
+//   }
+// }
+
+// class cat extends Animlal {
+//   constructor(public name: string) {
+//     super(name);
+//   }
+// }
+
+// const myDog = new dog("Max");
+// myDog.move(25);
+// const myCat = new cat("Mr Meowgi");
+// myCat.move(0.0005);
+
+class Product {
+  constructor(public id: number) {}
+  display(price: number, description: string): void {
+    console.log(
+      `the product with id: ${this.id} has the price: ${price} and description ${description}`,
+    );
   }
 }
 
-class dog extends Animlal {
-  constructor(public name: string = "jack") {
-    super(name);
+class Book extends Product {
+  constructor(public id: number) {
+    super(id);
   }
 }
 
-class cat extends Animlal {
-  constructor(public name: string) {
-    super(name);
-  }
-}
-
-const myDog = new dog("Max");
-myDog.move(25);
-const myCat = new cat("Mr Meowgi");
-myCat.move(0.0005);
+const myBook = new Book(100);
+myBook.display(10, "The Davinci code");
 
 // Inheritance↑↑↑↑↑↑↑↑↑
 
