@@ -1,4 +1,94 @@
+//principle ONE. Single responsibility Princicple
+
+// Instead of doing this
+
+// class User{
+//     constructor(name:string, email:string){}
+
+//     userAuthentication ():void{
+//         //performs authentication
+//     }
+// }
+
+// DO THIS
+
+class User {
+  constructor(name: string, email: string) {}
+}
+
+class UserAuth {
+  constructor(user: User) {}
+
+  authenticator(password: string) {
+    return `Fas${password}`;
+  }
+}
+
 // Inheritance ↓ ↓ ↓ ↓ ↓ ↓
+
+// class Product {
+//     constructor(
+//       public id: number,
+//       public price: number,
+//       public description: string,
+//     ) {}
+//     display(): void {
+//       console.log(
+//         `the product with id: ${this.id} has the price: ${this.price} and description ${this.description}`,
+//       );
+//     }
+//   }
+
+//   class Book extends Product {
+//     constructor(
+//       public id: number,
+//       public price: number,
+//       public description: string,
+//       public title: string,
+//       public author: string,
+//     ) {
+//       super(id, price, description);
+//     }
+
+//     display(): void {
+//       super.display(); //displays the original display function
+//       console.log(
+//         `the product with id: ${this.id} has the price: ${this.price} and description ${this.description} with author and title  ${(this.author, this.title)}`,
+//       );
+//     }
+//   }
+
+//   class Electronics extends Product {
+//     constructor(
+//       public id: number,
+//       public price: number,
+//       public description: string,
+//       public brand: string,
+//       public model: string,
+//     ) {
+//       super(id, price, description);
+//     }
+//     display(): void {
+//       super.display();
+//       console.log(
+//         `the product with id: ${this.id} has the price: ${this.price} and description ${this.description} with bradn and model  ${(this.brand, this.model)}`,
+//       );
+//     }
+//   }
+
+//   const myBook = new Book(
+//     100,
+//     1678,
+//     "A good book",
+//     "The Da vinci Code",
+//     "Dan brown ",
+//   );
+//   myBook.display();
+
+//   const myElectronic = new Electronics(50, 10089, "TV", "LG", "54GL");
+//   myElectronic.display();
+
+// Inheritance↑↑↑↑↑↑↑↑↑
 
 // class Animlal {
 //   constructor(public name: string) {}
@@ -23,70 +113,6 @@
 // myDog.move(25);
 // const myCat = new cat("Mr Meowgi");
 // myCat.move(0.0005);
-
-class Product {
-  constructor(
-    public id: number,
-    public price: number,
-    public description: string,
-  ) {}
-  display(): void {
-    console.log(
-      `the product with id: ${this.id} has the price: ${this.price} and description ${this.description}`,
-    );
-  }
-}
-
-class Book extends Product {
-  constructor(
-    public id: number,
-    public price: number,
-    public description: string,
-    public title: string,
-    public author: string,
-  ) {
-    super(id, price, description);
-  }
-
-  display(): void {
-    super.display(); //displays the original display function
-    console.log(
-      `the product with id: ${this.id} has the price: ${this.price} and description ${this.description} with author and title  ${(this.author, this.title)}`,
-    );
-  }
-}
-
-class Electronics extends Product {
-  constructor(
-    public id: number,
-    public price: number,
-    public description: string,
-    public brand: string,
-    public model: string,
-  ) {
-    super(id, price, description);
-  }
-  display(): void {
-    super.display();
-    console.log(
-      `the product with id: ${this.id} has the price: ${this.price} and description ${this.description} with bradn and model  ${(this.brand, this.model)}`,
-    );
-  }
-}
-
-const myBook = new Book(
-  100,
-  1678,
-  "A good book",
-  "The Da vinci Code",
-  "Dan brown ",
-);
-myBook.display();
-
-const myElectronic = new Electronics(50, 10089, "TV", "LG", "54GL");
-myElectronic.display();
-
-// Inheritance↑↑↑↑↑↑↑↑↑
 
 // Encapsulation↓ ↓ ↓ ↓ ↓ ↓ ↓
 //BankAccount
