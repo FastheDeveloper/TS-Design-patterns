@@ -1,230 +1,113 @@
-// Inheritance ↓ ↓ ↓ ↓ ↓ ↓
+//S - SINGLE RESPONSIBILITY PRINCIPLE ( A CLASS SHOULD ONLY DO ONE THING)
+//O - OPEN CLOSE PRINCIPLE (A CLASS SHOULD BE OPEN TO EXTENSION BUT CLOSED TO MODIFICATION)
 
-// class Animlal {
-//   constructor(public name: string) {}
-//   move(distance: number): void {
-//     console.log(`${this.name} moved ${distance}km.`);
-//   }
+// WRONG WAY OF CREATING A DISCOUNT CALCULATOR CUS WHAT IF I WANT TO ADD MORE CUSTOMER TYPES
+// TYPES I HAVE RN
+// REGULARS - 10% DISCOUNT
+// PREMIUM -  20% DISCOUNT
+
+// class Discount{
+//     giveDiscount(customerType:"premium"|"regular"):number{
+//         if(customerType==='premium'){
+//             return 20
+//         }else if(customerType==='regular'){
+//             return 10
+//         }else{
+//             return 0
+//         }
+//     }
 // }
 
-// class dog extends Animlal {
-//   constructor(public name: string = "jack") {
-//     super(name);
-//   }
-// }
+//RIGHT NOW
+interface Customer {
+  giveDiscount(): number;
+  addLoyaltyPoints(amountSpent: number): number;
+}
 
-// class cat extends Animlal {
-//   constructor(public name: string) {
-//     super(name);
-//   }
-// }
+class RegularCustomer implements Customer {
+  constructor() {}
+  giveDiscount(): number {
+    console.log("10");
 
-// const myDog = new dog("Max");
-// myDog.move(25);
-// const myCat = new cat("Mr Meowgi");
-// myCat.move(0.0005);
-
-class Product {
-  constructor(
-    public id: number,
-    public price: number,
-    public description: string,
-  ) {}
-  display(): void {
-    console.log(
-      `the product with id: ${this.id} has the price: ${this.price} and description ${this.description}`,
-    );
+    return 10;
+  }
+  addLoyaltyPoints(amountSpent: number): number {
+    return amountSpent;
   }
 }
 
-class Book extends Product {
-  constructor(
-    public id: number,
-    public price: number,
-    public description: string,
-    public title: string,
-    public author: string,
-  ) {
-    super(id, price, description);
+class PremiumCustomer implements Customer {
+  giveDiscount(): number {
+    console.log("20");
+    return 20;
   }
 
-  display(): void {
-    super.display(); //displays the original display function
-    console.log(
-      `the product with id: ${this.id} has the price: ${this.price} and description ${this.description} with author and title  ${(this.author, this.title)}`,
-    );
+  addLoyaltyPoints(amountSpent: number): number {
+    return amountSpent * 1.4;
   }
 }
 
-class Electronics extends Product {
-  constructor(
-    public id: number,
-    public price: number,
-    public description: string,
-    public brand: string,
-    public model: string,
-  ) {
-    super(id, price, description);
+class GoldCustomer implements Customer {
+  giveDiscount(): number {
+    console.log("50");
+    return 500;
   }
-  display(): void {
-    super.display();
-    console.log(
-      `the product with id: ${this.id} has the price: ${this.price} and description ${this.description} with bradn and model  ${(this.brand, this.model)}`,
-    );
+  addLoyaltyPoints(amountSpent: number): number {
+    return amountSpent * 2;
   }
 }
 
-const myBook = new Book(
-  100,
-  1678,
-  "A good book",
-  "The Da vinci Code",
-  "Dan brown ",
-);
-myBook.display();
+class DiscountOuter {
+  giveDiscount(customer: Customer) {
+    return customer.giveDiscount();
+  }
+  addLoyaltyPoints(amountSpent: number): number {
+    return amountSpent * 3;
+  }
+}
 
-const myElectronic = new Electronics(50, 10089, "TV", "LG", "54GL");
-myElectronic.display();
+const Fas: PremiumCustomer = new PremiumCustomer();
+const calcDiscount: DiscountOuter = new DiscountOuter();
+calcDiscount.giveDiscount(Fas);
 
-// Inheritance↑↑↑↑↑↑↑↑↑
+//S IS BELOW
+// class BlogPost {
+//   title: string;
+//   content: string;
+//   isAnonymous?: boolean;
 
-// Encapsulation↓ ↓ ↓ ↓ ↓ ↓ ↓
-//BankAccount
-//Depositing
-//Withdrawing
-//Balance
-
-// class BankAccount {
-//   private _balance: number;
-//   constructor(initialBalance: number) {
-//     this._balance = initialBalance;
+//   constructor(title: string, content: string, isAnonymous?: boolean) {
+//     this.title = title;
+//     this.content = content;
+//     this.isAnonymous = isAnonymous;
 //   }
 
-//   //getter to return balance
-//   public get balance(): number {
-//     return this._balance;
+//   createPost() {
+//     console.log("Blog post Created");
 //   }
 
-//   //Deposit Method
-//   public deposit(amount: number): void {
-//     if (amount < 0) {
-//       console.log("Invalid");
-//       return;
-//     }
-//     this._balance += amount;
+//   updatePost() {
+//     console.log("Post is updated");
 //   }
 
-//   //withdraw method
-//   public withdraw(amount: number): void {
-//     if (amount < 0) {
-//       console.log("Invalid");
-//       return;
-//     }
-
-//     if (this._balance < amount) {
-//       console.log("Invalid");
-//       return;
-//     }
-
-//     this._balance -= amount;
+//   deletePost() {
+//     console.log("Post Is deleted");
 //   }
 // }
 
-// let FasAccount = new BankAccount(500);
+// class BlogDisplayer {
+//   constructor(public blogPost: BlogPost) {}
 
-// console.log(FasAccount.balance);
-// FasAccount.deposit(500);
-// console.log(FasAccount.balance);
-// FasAccount.withdraw(200);
-// console.log(FasAccount.balance);
-
-// Encapsulation↑↑↑↑↑↑↑↑↑
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-// ABSTRACTION ↓ ↓ ↓ ↓ ↓ ↓ ↓
-// // //shapes
-// //Calculates Area And Perimeter
-// //Simple-single function calculateTotalArea
-
-// //Interface of Shape
-
-// //Date Class
-// //Get Current Year
-// //Get Current Month
-// //Get Current Date
-
-// const now = new Date();
-
-// const currentYear = now.getFullYear();
-// const currentMonth = now.getMonth() + 1;
-// const currentDate = now.getDate();
-
-// console.log(currentYear);
-// console.log(currentMonth);
-// console.log(currentDate);
-
-// //shapes
-// //Calculates Area And Perimeter
-// //Simple-single function calculateTotalArea
-
-// //Interface of Shape
-
-// //Date Class
-// //Get Current Year
-// //Get Current Month
-// //Get Current Date
-
-// interface Shape {
-//   area(): number;
-//   perimeter(): number;
-// }
-
-// class Circle implements Shape {
-//   constructor(private radius: number) {}
-//   area(): number {
-//     return Math.PI * this.radius * this.radius;
-//   }
-
-//   perimeter(): number {
-//     return 2 * Math.PI * this.radius;
+//   display() {
+//     console.log(
+//       `${this.blogPost.title} is a blog wit thoe commet: ${this.blogPost.content} `,
+//     );
+//     return `<h1>${this.blogPost.title}</h1><p>${this.blogPost.content}`;
 //   }
 // }
 
-// class Rectangle implements Shape {
-//   constructor(
-//     private width: number,
-//     private height: number,
-//   ) {}
-//   area(): number {
-//     return this.width * this.height;
-//   }
+// const myBlog = new BlogPost("The fas Blog", "fas was a blogger");
+// const myDisplayer = new BlogDisplayer(myBlog);
+// myDisplayer.display();
 
-//   perimeter(): number {
-//     return 2 * (this.width + this.height);
-//   }
-// }
-
-// function calculateTotalArea(Shape: Shape): number {
-//   return Shape.area();
-// }
-
-// function calculatePerimeter(Shape: Shape): number {
-//   return Shape.perimeter();
-// }
-// let circle: Circle = new Circle(5);
-// let rectangle: Rectangle = new Rectangle(4, 6);
-// console.log("Area of circle", calculateTotalArea(circle));
-// console.log("Area of rectangle", calculateTotalArea(rectangle));
-// console.log("Perimeter of circle", calculatePerimeter(circle));
-// console.log("Perimeter of rectangle", calculatePerimeter(rectangle));
-
-// ABSTRACTION↑↑↑↑↑↑↑↑↑
+// //S IS ABOVE
