@@ -1,7 +1,52 @@
 //S - SINGLE RESPONSIBILITY PRINCIPLE ( A CLASS SHOULD ONLY DO ONE THING)
 //O - OPEN CLOSE PRINCIPLE (A CLASS SHOULD BE OPEN TO EXTENSION BUT CLOSED TO MODIFICATION)
 //L -  LISKOV SUBSTITITION PRINCIPLE ( IF S IS A SUBSTYPE OF T, THEN OBJECT OF THE TYPE T IN A PROGRAM MAY BE REPLACED WITH OBJECT OF TYPE S WITHOUT ALTWERING ANY OF THE DESIRABLE PROPERTIES OF THAT PROGRAM)
+//I - INTERFACE SEGREGATION PRINCIPLE (DIVIDE  YOUR INTERFACES INTO MULTIPLE FUNCTIONALITIES WHICH ARE NOT LIKED TOGETHER)
 
+//I Start
+
+interface Machine {
+  print(document: Document): void;
+  scan(document: Document): void;
+  fax(document: Document): void;
+}
+
+//Break down the Machine interface likr this instead So they are only availbe for with
+interface Printer {
+  print(document: Document): void;
+}
+
+interface Scanner {
+  scan(document: Document): void;
+}
+
+interface Fax {
+  fax(document: Document): void;
+}
+
+// class MultiFuction implements Machine { //Makes sence for a MultiFunctional Printer to use machine
+class MultiFuction implements Printer, Scanner, Fax {
+  print(document: Document): void {
+    console.log("Printing");
+  }
+  scan(document: Document): void {
+    console.log("Scanning");
+  }
+  fax(document: Document): void {
+    console.log("Faxing");
+  }
+}
+
+// class SimplePrinter implements Machine{ // this class is using an interface that is more than it needs
+
+class SimplePrinter implements Printer {
+  print(document: Document): void {
+    console.log("Printing");
+  }
+}
+//I end
+
+//L Opened
 // abstract class Shape {
 //   abstract calculateArea(): number;
 // }
@@ -42,38 +87,38 @@
 // PROCESS CREDIT CARD
 //  /DEBIT CARD
 // PAYPAL
-abstract class Payment {
-  abstract debitCustomer(amount: number): number;
-}
+// abstract class Payment {
+//   abstract debitCustomer(amount: number): number;
+// }
 
-class CreditCard extends Payment {
-  debitCustomer(amount: number): number {
-    let tax = 10;
-    return amount + tax;
-  }
-}
+// class CreditCard extends Payment {
+//   debitCustomer(amount: number): number {
+//     let tax = 10;
+//     return amount + tax;
+//   }
+// }
 
-class DebitCard extends Payment {
-  debitCustomer(amount: number): number {
-    let tax = 20;
-    return amount + tax;
-  }
-}
+// class DebitCard extends Payment {
+//   debitCustomer(amount: number): number {
+//     let tax = 20;
+//     return amount + tax;
+//   }
+// }
 
-class PayPal extends Payment {
-  debitCustomer(amount: number): number {
-    let tax = 12;
-    return amount + tax;
-  }
-}
+// class PayPal extends Payment {
+//   debitCustomer(amount: number): number {
+//     let tax = 12;
+//     return amount + tax;
+//   }
+// }
 
-function makePayment(paymentMethod: Payment, amount: number) {
-  return paymentMethod.debitCustomer(amount);
-}
+// function makePayment(paymentMethod: Payment, amount: number) {
+//   return paymentMethod.debitCustomer(amount);
+// }
 
-const newCustomer = new CreditCard();
+// const newCustomer = new CreditCard();
 
-console.log(makePayment(newCustomer, 3000));
+// console.log(makePayment(newCustomer, 3000));
 
 //L Closed
 
