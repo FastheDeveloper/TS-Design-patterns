@@ -43,46 +43,37 @@
 //  /DEBIT CARD
 // PAYPAL
 abstract class Payment {
-  abstract debitCustomer(): number;
+  abstract debitCustomer(amount: number): number;
 }
 
 class CreditCard extends Payment {
-  constructor(public amount: number) {
-    super();
-  }
-  debitCustomer(): number {
+  debitCustomer(amount: number): number {
     let tax = 10;
-    return this.amount + tax;
+    return amount + tax;
   }
 }
 
 class DebitCard extends Payment {
-  constructor(public amount: number) {
-    super();
-  }
-  debitCustomer(): number {
+  debitCustomer(amount: number): number {
     let tax = 20;
-    return this.amount + tax;
+    return amount + tax;
   }
 }
 
 class PayPal extends Payment {
-  constructor(public amount: number) {
-    super();
-  }
-  debitCustomer(): number {
+  debitCustomer(amount: number): number {
     let tax = 12;
-    return this.amount + tax;
+    return amount + tax;
   }
 }
 
-function makePayment(paymentMethod: Payment) {
-  return paymentMethod.debitCustomer();
+function makePayment(paymentMethod: Payment, amount: number) {
+  return paymentMethod.debitCustomer(amount);
 }
 
-const newCustomer = new CreditCard(2000);
+const newCustomer = new CreditCard();
 
-console.log(makePayment(newCustomer));
+console.log(makePayment(newCustomer, 3000));
 
 //L Closed
 
