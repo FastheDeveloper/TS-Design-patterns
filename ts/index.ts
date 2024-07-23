@@ -5,45 +5,107 @@
 
 //I Start
 
-interface Machine {
-  print(document: Document): void;
-  scan(document: Document): void;
-  fax(document: Document): void;
+// REAL LIFE IMPLEMENTATION
+
+interface Post {
+  title: string;
+  content: string;
 }
 
-//Break down the Machine interface likr this instead So they are only availbe for with
-interface Printer {
-  print(document: Document): void;
+interface Comments {
+  comment: string;
+}
+interface CreatePost {
+  createPost(post: Post): void;
 }
 
-interface Scanner {
-  scan(document: Document): void;
+interface CommentPost {
+  commentPost(comment: Comments): void;
 }
 
-interface Fax {
-  fax(document: Document): void;
+interface SharingPost {
+  shareingPost(): void;
 }
 
-// class MultiFuction implements Machine { //Makes sence for a MultiFunctional Printer to use machine
-class MultiFuction implements Printer, Scanner, Fax {
-  print(document: Document): void {
-    console.log("Printing");
+class AdminUser implements CreatePost, CommentPost, SharingPost {
+  createPost(post: Post): void {
+    console.log(
+      "I am admin and i am creatinf a post with tile: ",
+      post.title,
+      "and connect ",
+      post.content,
+    );
   }
-  scan(document: Document): void {
-    console.log("Scanning");
+  commentPost(comment: Comments): void {
+    console.log(
+      "I am admin and i am commenting on a post with : ",
+      comment.comment,
+    );
   }
-  fax(document: Document): void {
-    console.log("Faxing");
+  shareingPost(): void {
+    console.log("I am admin and i am sharing a post");
   }
 }
 
-// class SimplePrinter implements Machine{ // this class is using an interface that is more than it needs
-
-class SimplePrinter implements Printer {
-  print(document: Document): void {
-    console.log("Printing");
+class RegularUser implements CommentPost, SharingPost {
+  commentPost(comment: Comments): void {
+    console.log(
+      "I am Regular User and i am commenting a post with : ",
+      comment.comment,
+    );
+  }
+  shareingPost(): void {
+    console.log("I am Regular and i am sharing a post");
   }
 }
+
+const myself = new RegularUser();
+const higherMe = new AdminUser();
+
+myself.commentPost({
+  comment: "loser",
+});
+higherMe.createPost({ title: "Creator test", content: "Contenting" });
+higherMe.commentPost({ comment: "Fas is comm" });
+// interface Machine {
+//   print(document: Document): void;
+//   scan(document: Document): void;
+//   fax(document: Document): void;
+// }
+
+// //Break down the Machine interface likr this instead So they are only availbe for with
+// interface Printer {
+//   print(document: Document): void;
+// }
+
+// interface Scanner {
+//   scan(document: Document): void;
+// }
+
+// interface Fax {
+//   fax(document: Document): void;
+// }
+
+// // class MultiFuction implements Machine { //Makes sence for a MultiFunctional Printer to use machine
+// class MultiFuction implements Printer, Scanner, Fax {
+//   print(document: Document): void {
+//     console.log("Printing");
+//   }
+//   scan(document: Document): void {
+//     console.log("Scanning");
+//   }
+//   fax(document: Document): void {
+//     console.log("Faxing");
+//   }
+// }
+
+// // class SimplePrinter implements Machine{ // this class is using an interface that is more than it needs
+
+// class SimplePrinter implements Printer {
+//   print(document: Document): void {
+//     console.log("Printing");
+//   }
+// }
 //I end
 
 //L Opened
