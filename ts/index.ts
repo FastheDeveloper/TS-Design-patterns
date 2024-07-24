@@ -2,71 +2,126 @@
 //O - OPEN CLOSE PRINCIPLE (A CLASS SHOULD BE OPEN TO EXTENSION BUT CLOSED TO MODIFICATION)
 //L -  LISKOV SUBSTITITION PRINCIPLE ( IF S IS A SUBSTYPE OF T, THEN OBJECT OF THE TYPE T IN A PROGRAM MAY BE REPLACED WITH OBJECT OF TYPE S WITHOUT ALTWERING ANY OF THE DESIRABLE PROPERTIES OF THAT PROGRAM)
 //I - INTERFACE SEGREGATION PRINCIPLE (DIVIDE  YOUR INTERFACES INTO MULTIPLE FUNCTIONALITIES WHICH ARE NOT LIKED TOGETHER)
+//D - DEPENDENCY INVERSION PRINCIPLE(HIGH LEVEL MODULE SHOULD NOT DEPEND ON LOW LEVEL MODULES BOTH SHOULD DEPEND ON ABSTRACTIONS. ABSTRACTIONS SHOULD NOT DEPEND ON DETAILS, DETAILS SHOULD DEPEND ON ABSTRACTIONS)
 
+//D STARTS
+
+//D ENDS
+
+//WRONG WAY
+
+//IF MySqlDatabase(LLM) is changed HLM would have to be changed
+// so if we change from a mySqlDB we have to start changing everything
+class MySqlDatabase {
+  save(data: string): void {}
+}
+
+class HighLevelModule {
+  constructor(private database: MySqlDatabase) {}
+  execute(data: string) {
+    this.database.save(data); // THis is dependent on the details inside MySQL
+  }
+}
+
+// /WRONG WAY
+
+//Right way
+interface IDatabase {
+  save(data: string): void;
+}
+
+class MySQLDatabase implements IDatabase {
+  save(data: string): void {
+    console.log(data, "is being sabed with MYSQL");
+  }
+}
+
+class MogonDb implements IDatabase {
+  save(data: string): void {
+    console.log(data, "is being sabed with MongoDB");
+  }
+}
+
+class HLM {
+  constructor(private database: IDatabase) {}
+  execute(data: string) {
+    this.database.save(data); // THis is dependent on the details inside MySQL
+  }
+}
+
+const mySqlInstance: MySQLDatabase = new MySQLDatabase();
+const mongo: MogonDb = new MogonDb();
+
+const user: HLM = new HLM(mySqlInstance);
+const admin: HLM = new HLM(mongo);
+
+user.execute("softt");
+admin.execute("hardd");
 //I Start
 
 // REAL LIFE IMPLEMENTATION
 
-interface Post {
-  title: string;
-  content: string;
-}
+// interface Post {
+//   title: string;
+//   content: string;
+// }
 
-interface Comments {
-  comment: string;
-}
-interface CreatePost {
-  createPost(post: Post): void;
-}
+// interface Comments {
+//   comment: string;
+// }
+// interface CreatePost {
+//   createPost(post: Post): void;
+// }
 
-interface CommentPost {
-  commentPost(comment: Comments): void;
-}
+// interface CommentPost {
+//   commentPost(comment: Comments): void;
+// }
 
-interface SharingPost {
-  shareingPost(): void;
-}
+// interface SharingPost {
+//   shareingPost(): void;
+// }
 
-class AdminUser implements CreatePost, CommentPost, SharingPost {
-  createPost(post: Post): void {
-    console.log(
-      "I am admin and i am creatinf a post with tile: ",
-      post.title,
-      "and connect ",
-      post.content,
-    );
-  }
-  commentPost(comment: Comments): void {
-    console.log(
-      "I am admin and i am commenting on a post with : ",
-      comment.comment,
-    );
-  }
-  shareingPost(): void {
-    console.log("I am admin and i am sharing a post");
-  }
-}
+// class AdminUser implements CreatePost, CommentPost, SharingPost {
+//   createPost(post: Post): void {
+//     console.log(
+//       "I am admin and i am creatinf a post with tile: ",
+//       post.title,
+//       "and connect ",
+//       post.content,
+//     );
+//   }
+//   commentPost(comment: Comments): void {
+//     console.log(
+//       "I am admin and i am commenting on a post with : ",
+//       comment.comment,
+//     );
+//   }
+//   shareingPost(): void {
+//     console.log("I am admin and i am sharing a post");
+//   }
+// }
 
-class RegularUser implements CommentPost, SharingPost {
-  commentPost(comment: Comments): void {
-    console.log(
-      "I am Regular User and i am commenting a post with : ",
-      comment.comment,
-    );
-  }
-  shareingPost(): void {
-    console.log("I am Regular and i am sharing a post");
-  }
-}
+// class RegularUser implements CommentPost, SharingPost {
+//   commentPost(comment: Comments): void {
+//     console.log(
+//       "I am Regular User and i am commenting a post with : ",
+//       comment.comment,
+//     );
+//   }
+//   shareingPost(): void {
+//     console.log("I am Regular and i am sharing a post");
+//   }
+// }
 
-const myself = new RegularUser();
-const higherMe = new AdminUser();
+// const myself = new RegularUser();
+// const higherMe = new AdminUser();
 
-myself.commentPost({
-  comment: "loser",
-});
-higherMe.createPost({ title: "Creator test", content: "Contenting" });
-higherMe.commentPost({ comment: "Fas is comm" });
+// myself.commentPost({
+//   comment: "loser",
+// });
+// higherMe.createPost({ title: "Creator test", content: "Contenting" });
+// higherMe.commentPost({ comment: "Fas is comm" });
+
 // interface Machine {
 //   print(document: Document): void;
 //   scan(document: Document): void;
