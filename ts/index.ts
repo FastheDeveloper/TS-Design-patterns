@@ -1,352 +1,195 @@
-//S - SINGLE RESPONSIBILITY PRINCIPLE ( A CLASS SHOULD ONLY DO ONE THING)
-//O - OPEN CLOSE PRINCIPLE (A CLASS SHOULD BE OPEN TO EXTENSION BUT CLOSED TO MODIFICATION)
-//L -  LISKOV SUBSTITITION PRINCIPLE ( IF S IS A SUBSTYPE OF T, THEN OBJECT OF THE TYPE T IN A PROGRAM MAY BE REPLACED WITH OBJECT OF TYPE S WITHOUT ALTWERING ANY OF THE DESIRABLE PROPERTIES OF THAT PROGRAM)
-//I - INTERFACE SEGREGATION PRINCIPLE (DIVIDE  YOUR INTERFACES INTO MULTIPLE FUNCTIONALITIES WHICH ARE NOT LIKED TOGETHER)
-//D - DEPENDENCY INVERSION PRINCIPLE(HIGH LEVEL MODULE SHOULD NOT DEPEND ON LOW LEVEL MODULES BOTH SHOULD DEPEND ON ABSTRACTIONS. ABSTRACTIONS SHOULD NOT DEPEND ON DETAILS, DETAILS SHOULD DEPEND ON ABSTRACTIONS)
+//Sigleton Design Patter - A CLASS HAS ONLY ONE INSTACE WHILE PROCIDING A GLOBAL ACCESS POINT TO THE INSTANCE
+// Prototype Design patter - ALLOWS TO CREATE CLONES OF AN OBJECT
 
-//D STARTS
+///Prototye
 
-//D ENDS
-
-//WRONG WAY
-
-//IF MySqlDatabase(LLM) is changed HLM would have to be changed
-// so if we change from a mySqlDB we have to start changing everything
-class MySqlDatabase {
-  save(data: string): void {}
+interface ShapeProperties {
+  color: string;
+  x: number;
+  y: number;
 }
 
-class HighLevelModule {
-  constructor(private database: MySqlDatabase) {}
-  execute(data: string) {
-    this.database.save(data); // THis is dependent on the details inside MySQL
+abstract class Shape {
+  constructor(public properties: ShapeProperties) {}
+  abstract clone(): Shape;
+}
+
+class Rectangle extends Shape {
+  constructor(
+    properties: ShapeProperties,
+    public width: number,
+    public height: number,
+  ) {
+    super(properties);
+  }
+  public clone(): Shape {
+    let clonedProperties: ShapeProperties = {
+      color: this.properties.color,
+      x: this.properties.x,
+      y: this.properties.y,
+    };
+    return new Rectangle(clonedProperties, this.width, this.height);
   }
 }
 
-// /WRONG WAY
-
-//Right way
-interface IDatabase {
-  save(data: string): void;
-}
-
-class MySQLDatabase implements IDatabase {
-  save(data: string): void {
-    console.log(data, "is being sabed with MYSQL");
+class Circle extends Shape {
+  constructor(
+    properties: ShapeProperties,
+    public radius: number,
+  ) {
+    super(properties);
+  }
+  public clone(): Shape {
+    let clonedProperties: ShapeProperties = {
+      color: this.properties.color,
+      x: this.properties.x,
+      y: this.properties.y,
+    };
+    return new Circle(clonedProperties, this.radius);
   }
 }
 
-class MogonDb implements IDatabase {
-  save(data: string): void {
-    console.log(data, "is being sabed with MongoDB");
+let redTangle: Shape = new Rectangle(
+  {
+    x: 23,
+    y: 1,
+    color: "red",
+  },
+  12,
+  44,
+);
+
+let nwotherR: Shape = redTangle.clone();
+nwotherR.properties.color = "green";
+
+console.log(redTangle);
+console.log(nwotherR);
+
+///
+interface UserDetails {
+  name: string;
+  age: number;
+  email: string;
+}
+interface Prototype {
+  clone(): Prototype;
+  getUserDetails(): UserDetails;
+}
+
+class ConcretePrototype implements Prototype {
+  constructor(private user: UserDetails) {}
+  public clone(): Prototype {
+    const clone = Object.create(this);
+    clone.user = { ...this.user };
+    return clone.user;
+  }
+  public getUserDetails(): UserDetails {
+    return this.user;
   }
 }
 
-class HLM {
-  constructor(private database: IDatabase) {}
-  execute(data: string) {
-    this.database.save(data); // THis is dependent on the details inside MySQL
-  }
+let user1 = new ConcretePrototype({ name: "Fas", age: 22, email: "ff" });
+let user2 = user1.clone();
+
+if (user1 === user2) {
+  console.log("Not de same");
+} else {
+  console.log("Sperates");
 }
+// console.log(user2.getUserDetails());
 
-const mySqlInstance: MySQLDatabase = new MySQLDatabase();
-const mongo: MogonDb = new MogonDb();
+///Prototye
 
-const user: HLM = new HLM(mySqlInstance);
-const admin: HLM = new HLM(mongo);
+///Singleton
 
-user.execute("softt");
-admin.execute("hardd");
-//I Start
+// /When to use-
+// -----When using global variables to keep data for many parts of the system but should always have the same value where ever used(USE SINGLETON)
+// -------When u have an object with multiple access point but single control
+// ---If code includes repeated initialisation of the same object over n over...Use singleton
 
-// REAL LIFE IMPLEMENTATION
-
-// interface Post {
-//   title: string;
-//   content: string;
-// }
-
-// interface Comments {
-//   comment: string;
-// }
-// interface CreatePost {
-//   createPost(post: Post): void;
-// }
-
-// interface CommentPost {
-//   commentPost(comment: Comments): void;
-// }
-
-// interface SharingPost {
-//   shareingPost(): void;
-// }
-
-// class AdminUser implements CreatePost, CommentPost, SharingPost {
-//   createPost(post: Post): void {
-//     console.log(
-//       "I am admin and i am creatinf a post with tile: ",
-//       post.title,
-//       "and connect ",
-//       post.content,
-//     );
+// class Singleton {
+//   private static instance: Singleton;
+//   private static _value: number;
+//   private constructor() {
+//     //means this class cant be instantioated with the 'new' keyword
 //   }
-//   commentPost(comment: Comments): void {
-//     console.log(
-//       "I am admin and i am commenting on a post with : ",
-//       comment.comment,
-//     );
-//   }
-//   shareingPost(): void {
-//     console.log("I am admin and i am sharing a post");
-//   }
-// }
 
-// class RegularUser implements CommentPost, SharingPost {
-//   commentPost(comment: Comments): void {
-//     console.log(
-//       "I am Regular User and i am commenting a post with : ",
-//       comment.comment,
-//     );
-//   }
-//   shareingPost(): void {
-//     console.log("I am Regular and i am sharing a post");
-//   }
-// }
-
-// const myself = new RegularUser();
-// const higherMe = new AdminUser();
-
-// myself.commentPost({
-//   comment: "loser",
-// });
-// higherMe.createPost({ title: "Creator test", content: "Contenting" });
-// higherMe.commentPost({ comment: "Fas is comm" });
-
-// interface Machine {
-//   print(document: Document): void;
-//   scan(document: Document): void;
-//   fax(document: Document): void;
-// }
-
-// //Break down the Machine interface likr this instead So they are only availbe for with
-// interface Printer {
-//   print(document: Document): void;
-// }
-
-// interface Scanner {
-//   scan(document: Document): void;
-// }
-
-// interface Fax {
-//   fax(document: Document): void;
-// }
-
-// // class MultiFuction implements Machine { //Makes sence for a MultiFunctional Printer to use machine
-// class MultiFuction implements Printer, Scanner, Fax {
-//   print(document: Document): void {
-//     console.log("Printing");
-//   }
-//   scan(document: Document): void {
-//     console.log("Scanning");
-//   }
-//   fax(document: Document): void {
-//     console.log("Faxing");
-//   }
-// }
-
-// // class SimplePrinter implements Machine{ // this class is using an interface that is more than it needs
-
-// class SimplePrinter implements Printer {
-//   print(document: Document): void {
-//     console.log("Printing");
-//   }
-// }
-//I end
-
-//L Opened
-// abstract class Shape {
-//   abstract calculateArea(): number;
-// }
-
-// class Rectangle extends Shape {
-//   constructor(
-//     public width: number,
-//     public height: number,
-//   ) {
-//     super();
-//   }
-//   public calculateArea(): number {
-//     return this.width * this.height;
-//   }
-// }
-
-// class Square extends Shape {
-//   constructor(public width: number) {
-//     super();
-//   }
-//   public calculateArea(): number {
-//     return this.width * this.width;
-//   }
-// }
-
-// function area(shape: Shape) {
-//   //This is expecting SHAPE a parent class
-//   return shape.calculateArea();
-// }
-
-// const rect = new Rectangle(4, 5);
-// const squa = new Square(5);
-
-// area(rect); //but we are using it with a child class instead...LISKOV
-
-//IMPLEMENTATION
-// CREATE A PAYMENT PROCESSOR
-// PROCESS CREDIT CARD
-//  /DEBIT CARD
-// PAYPAL
-// abstract class Payment {
-//   abstract debitCustomer(amount: number): number;
-// }
-
-// class CreditCard extends Payment {
-//   debitCustomer(amount: number): number {
-//     let tax = 10;
-//     return amount + tax;
-//   }
-// }
-
-// class DebitCard extends Payment {
-//   debitCustomer(amount: number): number {
-//     let tax = 20;
-//     return amount + tax;
-//   }
-// }
-
-// class PayPal extends Payment {
-//   debitCustomer(amount: number): number {
-//     let tax = 12;
-//     return amount + tax;
-//   }
-// }
-
-// function makePayment(paymentMethod: Payment, amount: number) {
-//   return paymentMethod.debitCustomer(amount);
-// }
-
-// const newCustomer = new CreditCard();
-
-// console.log(makePayment(newCustomer, 3000));
-
-//L Closed
-
-// WRONG WAY OF CREATING A DISCOUNT CALCULATOR CUS WHAT IF I WANT TO ADD MORE CUSTOMER TYPES
-// TYPES I HAVE RN
-// REGULARS - 10% DISCOUNT
-// PREMIUM -  20% DISCOUNT
-
-// class Discount{
-//     giveDiscount(customerType:"premium"|"regular"):number{
-//         if(customerType==='premium'){
-//             return 20
-//         }else if(customerType==='regular'){
-//             return 10
-//         }else{
-//             return 0
-//         }
+//   public static getInstance(): Singleton {
+//     if (!Singleton.instance) {
+//       Singleton.instance = new Singleton();
 //     }
-// }
-
-//RIGHT NOW OPEN-CLOSED
-// interface Customer {
-//   giveDiscount(): number;
-//   addLoyaltyPoints(amountSpent: number): number;
-// }
-
-// class RegularCustomer implements Customer {
-//   giveDiscount(): number {
-//     console.log("10");
-
-//     return 10;
+//     return Singleton.instance;
 //   }
-//   addLoyaltyPoints(amountSpent: number): number {
-//     return amountSpent;
+
+//   set value(value: number) {
+//     Singleton._value = value;
+//   }
+
+//   get value() {
+//     return Singleton._value;
 //   }
 // }
 
-// class PremiumCustomer implements Customer {
-//   giveDiscount(): number {
-//     console.log("20");
-//     return 20;
+// let instance1 = Singleton.getInstance();
+// let instance2 = Singleton.getInstance();
+// instance1.value = 10;
+// console.log(instance1.value, "fsf", instance2.value);
+
+// console.log(instance1 === instance2); //No new instance was created
+
+// //Singleton Logger Class
+// //Log Methid
+// //add multiple methods
+
+// class Logger {
+//   private static instance: Logger;
+//   private static _value: string;
+//   private constructor() {}
+
+//   public static getInstance(): Logger {
+//     if (!Logger.instance) {
+//       console.log("Creating Instance");
+//       Logger.instance = new Logger();
+//     }
+//     console.log("Got an Instance");
+
+//     return Logger.instance;
 //   }
 
-//   addLoyaltyPoints(amountSpent: number): number {
-//     return amountSpent * 1.4;
-//   }
-// }
-
-// class GoldCustomer implements Customer {
-//   giveDiscount(): number {
-//     console.log("50");
-//     return 500;
-//   }
-//   addLoyaltyPoints(amountSpent: number): number {
-//     return amountSpent * 2;
-//   }
-// }
-
-// class DiscountOuter {
-//   giveDiscount(customer: Customer) {
-//     return customer.giveDiscount();
-//   }
-//   addLoyaltyPoints(amountSpent: number): number {
-//     return amountSpent * 3;
-//   }
-// }
-
-// const Fas: PremiumCustomer = new PremiumCustomer();
-// const calcDiscount: DiscountOuter = new DiscountOuter();
-// calcDiscount.giveDiscount(Fas);
-
-// OPEN-CLOSED ABOVE
-
-//S IS BELOW
-// class BlogPost {
-//   title: string;
-//   content: string;
-//   isAnonymous?: boolean;
-
-//   constructor(title: string, content: string, isAnonymous?: boolean) {
-//     this.title = title;
-//     this.content = content;
-//     this.isAnonymous = isAnonymous;
+//   set Loged(message: string) {
+//     Logger._value = message;
+//     console.log("adding ", message, " to logs");
 //   }
 
-//   createPost() {
-//     console.log("Blog post Created");
+//   get Loged() {
+//     return Logger._value;
 //   }
 
-//   updatePost() {
-//     console.log("Post is updated");
-//   }
-
-//   deletePost() {
-//     console.log("Post Is deleted");
+//   public log(message: string): void {
+//     const timeStamp = new Date();
+//     console.log(timeStamp.toLocaleString(), " - ", message);
 //   }
 // }
 
-// class BlogDisplayer {
-//   constructor(public blogPost: BlogPost) {}
+// let myLogger = Logger.getInstance();
+// let urLogger = Logger.getInstance();
 
-//   display() {
-//     console.log(
-//       `${this.blogPost.title} is a blog wit thoe commet: ${this.blogPost.content} `,
-//     );
-//     return `<h1>${this.blogPost.title}</h1><p>${this.blogPost.content}`;
+// myLogger.Loged = "Fight for the work";
+// console.log(myLogger.Loged);
+
+// myLogger.log("Console.log ");
+
+// class Application {
+//   constructor(private logger: Logger) {}
+//   run(): void {
+//     this.logger.log("The app is running");
+//     this.logger.log("The app is stopping");
 //   }
 // }
 
-// const myBlog = new BlogPost("The fas Blog", "fas was a blogger");
-// const myDisplayer = new BlogDisplayer(myBlog);
-// myDisplayer.display();
+// let logger = Logger.getInstance();
+// let myApp = new Application(logger);
 
-// //S IS ABOVE
+// myApp.run();
+
+///Singleton
